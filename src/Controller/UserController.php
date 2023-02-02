@@ -2,39 +2,30 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Repository\UserRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/user', name: 'app_user_controller')]
 class UserController extends AbstractController
 {
-    #[Route('/user', name: 'app_user_create')]
-    public function index(): Response
+    #[Route('', name: 'app_user_create', methods: ['GET'])]
+    public function get(ManagerRegistry $registry) : Response
     {
-      $reqType = $_SERVER['REQUEST_METHOD'];
+        $userRepo = new UserRepository($registry);
+        $res = $userRepo->findAll();
+        return $this->json($res);
+   }
 
-
-       if ($reqType == "POST"){
-//         $this->createUser();
-       }
-
-       $twigPath = isset($path)? 'user'.$path.'/index.html.twig' : 'user/index.html.twig';
-      return $this->render($twigPath, [
-        'controller_name' => 'UserController',
-        'reqType'=>$reqType
-      ]);
+    #[Route('/create', name: 'app_user_create', methods: ['POST'])]
+    public function crate(ManagerRegistry $registry) : Response
+    {
+        $userRepo = new UserRepository($registry);
+        $res = $userRepo->findAll();
+        return $this->json($res);
     }
-
-  private function createUser() {
-      $user = new User();
-      if (isset($_POST['avatar'])){
-        $user->setAvatar($_POST['avatar']);
-      }
-    $user->setName($_POST['name']);
-    $user->setEmail($_POST['email']);
-    $user->setPassword($_POST['password']);
-    $user->setRole($_POST['role']);
-  }
 
 }
