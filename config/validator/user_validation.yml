@@ -1,0 +1,4 @@
+#App\Form\CreateUserType:
+#   properties:
+#     -name:
+#      -NotBlank: ~

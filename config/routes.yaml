@@ -6,4 +6,5 @@ controllers:
 
 app_user_controller:
     path: /users
-    controller: App\Controller\UserController::get
+    controller: App\Controller\UserController::formCreateUser
+    methods: 'GET'
