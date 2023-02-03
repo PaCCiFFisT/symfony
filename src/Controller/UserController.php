@@ -9,10 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/user', name: 'app_user_controller')]
+
 class UserController extends AbstractController
 {
-    #[Route('', name: 'app_user_create', methods: ['GET'])]
+
+
+    #[Route('', name: 'app_user_create')]
     public function get(ManagerRegistry $registry) : Response
     {
         $userRepo = new UserRepository($registry);
@@ -21,7 +23,7 @@ class UserController extends AbstractController
    }
 
     #[Route('/create', name: 'app_user_create', methods: ['POST'])]
-    public function crate(ManagerRegistry $registry) : Response
+    public function create(ManagerRegistry $registry) : Response
     {
         $userRepo = new UserRepository($registry);
         $res = $userRepo->findAll();
