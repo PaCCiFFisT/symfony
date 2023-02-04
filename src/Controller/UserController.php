@@ -8,20 +8,27 @@ use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-
 class UserController extends AbstractController
 {
-    #[Route( '/create', name: 'form_create_user', methods: ['GET','POST'])]
+
+    public function userAction():Response
+    {
+     return $this->render('user/index.html.twig');
+    }
+
+    #[Route( 'user/create', name: 'form_create_user', methods: ['GET','POST'])]
     public function formCreateUser(Request $request, ManagerRegistry $registry): Response
     {
         $form = $this->createForm(CreateUserType::class, null,[
             'method'=>'POST'
-//            'action'=>'/create/send'
         ]);
 
         $form->handleRequest($request);
@@ -34,9 +41,9 @@ class UserController extends AbstractController
 
             try {
                 $userRepo->save($user, true);
-                return $this->render('user/create/success.html.twig');
+                return $this->render('user/create/success/success.html.twig');
             }catch (Exception $e){
-                return $this->render('user/create/error.html.twig');
+                return $this->render('user/create/error/error.html.twig');
             }
 
 
@@ -45,17 +52,7 @@ class UserController extends AbstractController
         return $this->render('user/create/create.html.twig', ['user__create' => $form->createView()]);
     }
 
-    #[Route('/create/send', 'create_user', methods: ['POST'])]
-    public function actionCreateUser(ManagerRegistry $registry)
-    {
-        $userRepo = new UserRepository($registry);
-
-
-    }
-
-
-
-    #[Route('/get-all', name: 'app_user_get_all', methods: ['GET'])]
+    #[Route('user/get-all', name: 'app_user_get_all', methods: ['GET'])]
     public function get(ManagerRegistry $registry) : Response
     {
         $userRepo = new UserRepository($registry);

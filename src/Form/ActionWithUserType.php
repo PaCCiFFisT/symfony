@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
-class ActionWithUserType
+use Symfony\Component\Form\AbstractType;
+
+class ActionWithUserType extends AbstractType
 {
 
 }

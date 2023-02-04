@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -23,7 +24,6 @@ class CreateUserType extends AbstractType
             ->add('avatar', FileType::class, ['required' => false])
             ->add('submit', SubmitType::class, [
                 'label' => 'Create new user!',
-
             ]);
     }
 
@@ -32,7 +32,7 @@ class CreateUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => CreateUserType::class,
+            'data_class' => User::class,
         ]);
     }
 }

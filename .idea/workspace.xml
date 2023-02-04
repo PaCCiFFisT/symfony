@@ -5,7 +5,13 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/UserType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/CreateUserType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/ActionWithUserType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ActionWithUserType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/CreateUserType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/CreateUserType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/create/error.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/create/error/error.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/create/success.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/create/success/success.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/get/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/get/get.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,17 +200,21 @@
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "D:/PHP/symfony/templates/user/create",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "extract.css.actions.ExtractCSSConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\PHP\symfony\templates\user\create" />
-      <recent name="D:\PHP\symfony\templates\user" />
-      <recent name="D:\PHP\symfony\src\Controller" />
+      <recent name="D:\PHP\symfony\templates\user\get\error" />
+      <recent name="D:\PHP\symfony\templates\user\get\many" />
+      <recent name="D:\PHP\symfony\templates\user\get\all" />
+      <recent name="D:\PHP\symfony\templates\user\get\one" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\PHP\symfony\templates\user\create\success" />
+      <recent name="D:\PHP\symfony\templates\user\create\error" />
       <recent name="D:\PHP\symfony\templates\user\create" />
     </key>
   </component>
@@ -229,7 +239,8 @@
       <workItem from="1675356785280" duration="10413000" />
       <workItem from="1675451677752" duration="2012000" />
       <workItem from="1675454493384" duration="5928000" />
-      <workItem from="1675460539217" duration="2514000" />
+      <workItem from="1675460539217" duration="2771000" />
+      <workItem from="1675501199444" duration="5436000" />
     </task>
     <servers />
   </component>
