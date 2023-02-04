@@ -41,6 +41,7 @@ class UserController extends AbstractController
 
             try {
                 $userRepo->save($user, true);
+
                 return $this->render('user/create/success/success.html.twig');
             } catch (Exception $e) {
                 return $this->render('user/create/error/error.html.twig');
@@ -62,25 +63,29 @@ class UserController extends AbstractController
         return $this->json($res);
     }
 
-    #[Route('user/get-by-field', name: 'app_user_get_by_field', methods: ['GET'])]
+    #[Route('user/get-by-field', name: 'app_user_get_by_field', methods: [
+      'GET',
+      'POST',
+    ])]
     public function getByField(ManagerRegistry $registry, Request $req)
     {
-        $form = $this->createForm(GetUserByFieldType::class,[
-          'method'=>'POST'
+        $form = $this->createForm(GetUserByFieldType::class, [
+          'method' => 'POST',
         ]);
 
         $form->handleRequest($req);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = new User();
-            $user = $form->getData();
 
+            $data = array_slice($form->getData(),1);
+dump($data);
             $userRepo = new UserRepository($registry);
 
             try {
-                $userRepo->save($user, true);
-                return $this->render('user/create/success/success.html.twig');
+                $user = $userRepo->findBy($data);
+            dump($user);
+                return $this->json($user);
             } catch (Exception $e) {
                 return $this->render('user/create/error/error.html.twig');
             }
@@ -88,8 +93,8 @@ class UserController extends AbstractController
         }
 
 
-        return $this->render('user/get/byField/get.html.twig',[
-          'get_by_field'=>$form->createView()
+        return $this->render('user/get/byField/get.html.twig', [
+          'get_by_field' => $form->createView(),
         ]);
 
     }

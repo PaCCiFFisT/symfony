@@ -20,7 +20,7 @@ class GetUserByFieldType extends AbstractType
       array $options
     ): void {
         $builder
-          ->add('id', NumberType::class, ['required'=>FALSE])
+          ->add('id', TextType::class, ['required'=>FALSE])
           ->add('name', TextType::class, ['required'=>FALSE])
           ->add('email', EmailType::class, ['required'=>FALSE])
           ->add('city', TextType::class , ['required'=>FALSE])
