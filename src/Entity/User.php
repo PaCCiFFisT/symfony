@@ -29,7 +29,7 @@ class User
     private ?string $avatar = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $City = null;
+    private ?string $city = null;
 
     public function getId(): ?int
     {
@@ -98,12 +98,12 @@ class User
 
     public function getCity(): ?string
     {
-        return $this->City;
+        return $this->city;
     }
 
-    public function setCity(?string $City): self
+    public function setCity(?string $city): self
     {
-        $this->City = $City;
+        $this->city = $city;
 
         return $this;
     }

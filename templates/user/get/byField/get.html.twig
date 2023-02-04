@@ -1,0 +1,19 @@
+{% extends 'user-base.html.twig' %}
+
+{% block title %}Find user by field{% endblock %}
+
+{% block body %}
+    <style>
+        label{
+          margin-right: 10px;
+        }
+        input{
+          margin-bottom: 10px;
+        }
+    </style>
+    <h2>Find user by specific field</h2>
+    <p>You can fill one or multiply fields</p>
+    <div class="container">
+        {{ form(get_by_field) }}
+    </div>
+{% endblock %}
