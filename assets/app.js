@@ -23,11 +23,12 @@ updateUserOption.onchange = (e) => {
 
     xhr.onreadystatechange = () => {
         if (xhr.status === 200 && xhr.readyState === 4) {
+            console.log(123123)
             console.log(JSON.parse(xhr.response))
         }
     }
-    xhr.open("GET", 'user/update?id=' + id);
-    xhr.send();
+    xhr.open("GET", 'update');
+    xhr.send('id='+id);
 
 }
 

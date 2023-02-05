@@ -88,9 +88,6 @@ class UserController extends AbstractController
             'method' => 'POST',
         ]);
 
-        if (isset($_GET['id'])){
-            echo 'abracadabra';
-        }
 
         $form->handleRequest($req);
 
@@ -109,7 +106,9 @@ class UserController extends AbstractController
                     $user = $userRepo->findBy($fields);
                     return $this->json($user);
                 } catch (Exception $e) {
-                    return $this->render('user/error/error.html.twig', ['title__text' => 'Can\'t foun user!']);
+                    return $this->render('user/error/error.html.twig', [
+                        'title__text' => 'Can\'t foun user!'
+                    ]);
                 }
             } else {
                 $route = $this->generateUrl($req->attributes->get('_route'));
@@ -166,6 +165,14 @@ class UserController extends AbstractController
 
         $form->handleRequest($req);
 
+        /**
+         * TODO implement getting user by ID, create User object and show it in inputs
+         * TODO maybe need send ajax to other route
+        */
+
+        if (isset($_GET['id'])) {
+            echo 'abracadabra';
+        }
         return $this->render('user/update/update.html.twig', [
             'form' => $form->createView(),
             'btn_text' => 'Update user!',
