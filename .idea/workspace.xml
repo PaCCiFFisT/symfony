@@ -6,8 +6,10 @@
       <change beforePath="$PROJECT_DIR$/assets/styles/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Form/GetUserByFieldType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/GetUserByFieldType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user/create/error/error.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/error/error.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user/create/success/success.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/success/success.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/UpdateUserType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/UpdateUserType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/error/error.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/error/error.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/get/byField/get.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/get/byField/get.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/update/update.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/update/update.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +47,11 @@
         </option>
       </RecentBranches>
     </option>
+  </component>
+  <component name="JsbtTreeLayoutManager">
+    <layout place="tools.popupGrunt">
+      <scroll-view-position x="0" y="0" />
+    </layout>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -190,17 +197,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/PHP/symfony/templates/user/create&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;extract.css.actions.ExtractCSSConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/PHP/symfony/templates/user/create",
+    "nodejs_package_manager_path": "npm",
+    "php.override.implement.member.chooser.php.doc": "NONE",
+    "settings.editor.selected.configurable": "extract.css.actions.ExtractCSSConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\PHP\symfony\templates\user\create" />
@@ -239,7 +247,7 @@
       <workItem from="1675454493384" duration="5928000" />
       <workItem from="1675460539217" duration="2771000" />
       <workItem from="1675501199444" duration="5436000" />
-      <workItem from="1675605762261" duration="10185000" />
+      <workItem from="1675605762261" duration="12905000" />
     </task>
     <servers />
   </component>

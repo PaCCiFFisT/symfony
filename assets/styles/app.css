@@ -81,3 +81,12 @@ button{
     padding: 5px 10px;
     text-align: center;
 }
+.title-h2{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.describe__text{
+    text-align: center;
+    margin-bottom: 20px;
+}

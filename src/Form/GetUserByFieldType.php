@@ -26,10 +26,12 @@ class GetUserByFieldType extends AbstractType
             ->add('city', TextType::class, ['required' => FALSE])
             ->add('role', ChoiceType::class, [
                 'choices' => [
+                    ''=>'',
                     'User' => 'user',
                     'Admin' => 'admin',
                 ],
-                'attr'=>['title'=>'']
+                'attr'=>['title'=>''],
+                'required'=>FALSE
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit!',

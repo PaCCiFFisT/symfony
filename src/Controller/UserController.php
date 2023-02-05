@@ -6,7 +6,6 @@ use App\Form\CreateUserType;
 use App\Form\GetUserByFieldType;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +24,7 @@ class UserController extends AbstractController
 
     #[Route('user/create', name: 'form_create_user', methods: ['GET', 'POST'])]
     public function formCreateUser(
-        Request         $request,
+        Request         $req,
         ManagerRegistry $registry
     ): Response
     {
@@ -33,7 +32,7 @@ class UserController extends AbstractController
             'method' => 'POST',
         ]);
 
-        $form->handleRequest($request);
+        $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -48,12 +47,18 @@ class UserController extends AbstractController
                 try {
                     $userRepo->save($user, true);
 
-                    return $this->render('user/success/success.html.twig',['message'=>'User has been created!']);
+                    return $this->render('user/success/success.html.twig', ['message' => 'User has been created!']);
                 } catch (Exception $e) {
                     return $this->render('user/error/error.html.twig');
                 }
             } else {
-                return $this->render('user/error/error.html.twig', ['error' => 'User with this mail is already exist!']);
+                $route = $this->generateUrl($req->attributes->get('_route'));
+
+                return $this->render('user/error/error.html.twig', [
+                    'error' => 'User with this mail is already exist!',
+                    'title_text' => 'Can\'t create user!',
+                    'back_url'=>$route
+                ]);
             }
 
 
@@ -76,7 +81,7 @@ class UserController extends AbstractController
         'GET',
         'POST',
     ])]
-    public function getByField(ManagerRegistry $registry,  Request $req)
+    public function getByField(ManagerRegistry $registry, Request $req)
     {
         $form = $this->createForm(GetUserByFieldType::class, [
             'method' => 'POST',
@@ -92,14 +97,24 @@ class UserController extends AbstractController
                 }
             }, ARRAY_FILTER_USE_BOTH);
 
-            $userRepo = new UserRepository($registry);
+            if (count($fields) > 0) {
+                $userRepo = new UserRepository($registry);
 
-            try {
-                $user = $userRepo->findBy($fields);
-                return $this->json($user);
-            } catch (Exception $e) {
-                return $this->render('user/error/error.html.twig');
+                try {
+                    $user = $userRepo->findBy($fields);
+                    return $this->json($user);
+                } catch (Exception $e) {
+                    return $this->render('user/error/error.html.twig', ['title__text' => 'Can\'t foun user!']);
+                }
+            } else {
+                $route = $this->generateUrl($req->attributes->get('_route'));
+                return $this->render('user/error/error.html.twig', [
+                    'error' => 'You need to fill at least one field!',
+                    'title_text' => 'Can\'t found user!',
+                    'back_url'=>$route
+                ]);
             }
+
 
         }
 
@@ -109,21 +124,22 @@ class UserController extends AbstractController
         ]);
 
     }
-    #[Route('user/update', name: 'app_user_update', methods:["GET","PATCH"])]
-    public function updateUser(ManagerRegistry $registry, EntityManagerInterface $em, Request $req) : Response
+
+    #[Route('user/update', name: 'app_user_update', methods: ["GET", "PATCH"])]
+    public function updateUser(ManagerRegistry $registry, EntityManagerInterface $em, Request $req): Response
     {
-        $form = $this->createForm(GetUserByFieldType::class,[
-            'method'=>"PATCH"
+        $form = $this->createForm(GetUserByFieldType::class, [
+            'method' => "PATCH"
         ]);
-        
+
         $form->handleRequest($req);
 
 //        return $this->render('user/success/success.html.twig',['message'=>'User has been updated!']);
-        return $this->render('user/update/update.html.twig',[
-            'form'=>$form->createView(),
-            'btn_text'=>'Update user!',
-            'message'=>'Update user',
-            'explain_text'=>'Use id for choose user to modify'
+        return $this->render('user/update/update.html.twig', [
+            'form' => $form->createView(),
+            'btn_text' => 'Update user!',
+            'message' => 'Update user',
+            'explain_text' => 'Use id for choose user to modify'
         ]);
     }
 

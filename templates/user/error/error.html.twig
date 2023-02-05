@@ -2,10 +2,10 @@
  {% block body %}
      <div class="user__container">
 
- <h2 style="text-align: center;">Failed to create user!</h2>
+ <h2 class="title-h2" style="text-align: center;">{{title_text}}</h2>
      {% if error %}
-         <p>{{ error }}</p>
+         <p class="describe__text">{{ error }}</p>
      {% endif %}
-     <a href="/user/create">Go back</a>
+     <a href="{{ back_url }}">Go back</a>
      </div>
  {% endblock %}
