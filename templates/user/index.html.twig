@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User menu{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+
+
+        .btn__wrapper {
+            width: 90%;
+            margin: 0 auto;
+
+        }
+
+        .btn {
+        }
+    </style>
+
+    <div class="example-wrapper">
+        <h1>User menu:</h1>
+
+    </div>
+    <div class="btn__wrapper">
+        <a class="btn" href="create/create.html.twig">Create user</a>
+        <a class="btn" href="get/all/get.html.twig">Get all users</a>
+    </div>
+{% endblock %}

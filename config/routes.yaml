@@ -4,10 +4,7 @@ controllers:
         namespace: App\Controller
     type: attribute
 
-app_lucky_number:
-    path: /lucky/number
-    controller: App\Controller\LuckyController::number
-
-app_hello_world:
-    path: /hello-world
-    controller: App\Controller\HelloController::sayHello
+app_user_controller:
+    path: /user
+    controller: App\Controller\UserController::formCreateUser
+    methods: 'GET'
