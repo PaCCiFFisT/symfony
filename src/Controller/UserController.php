@@ -88,6 +88,10 @@ class UserController extends AbstractController
             'method' => 'POST',
         ]);
 
+        if (isset($_GET['id'])){
+            echo 'abracadabra';
+        }
+
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -147,7 +151,7 @@ class UserController extends AbstractController
             return $el[0];
         }, $result);
 
-        array_shift($indexes, '');
+        array_unshift($indexes, '');
 
         /**
          * create form with ID
@@ -162,13 +166,11 @@ class UserController extends AbstractController
 
         $form->handleRequest($req);
 
-
-
         return $this->render('user/update/update.html.twig', [
             'form' => $form->createView(),
             'btn_text' => 'Update user!',
             'message' => 'Update user',
-            'explain_text' => 'Use id for choose user to modify'
+            'explain_text' => 'Use id to choose user to modify'
         ]);
     }
 
