@@ -20,19 +20,22 @@ class UpdateUserType extends AbstractType
                 'required' => true,
                 'choices' => [
                     $options['id_options']
-                ]
+                ],
             ])
             ->add('name', TextType::class)
             ->add('email', EmailType::class)
             ->add('password', PasswordType::class)
-            ->add('submit', ButtonType::class);
+            ->add('button', ButtonType::class,[
+                'label'=>$options['btn_text']
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'id_options' => null
-        ])
+            'id_options' => null,
+            'btn_text'=>null
+        ]);
     }
 
 

@@ -5,11 +5,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/styles/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/GetUserByFieldType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/GetUserByFieldType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Form/UpdateUserType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/UpdateUserType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user/error/error.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/error/error.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user/get/byField/get.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/get/byField/get.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user/update/update.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/update/update.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,12 +29,8 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="create" />
-                    <option name="lastUsedInstant" value="1675355223" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="master" />
-                    <option name="lastUsedInstant" value="1675355222" />
+                    <option name="branchName" value="update" />
+                    <option name="lastUsedInstant" value="1675619113" />
                   </RecentBranch>
                 </list>
               </option>
@@ -247,7 +240,7 @@
       <workItem from="1675454493384" duration="5928000" />
       <workItem from="1675460539217" duration="2771000" />
       <workItem from="1675501199444" duration="5436000" />
-      <workItem from="1675605762261" duration="12905000" />
+      <workItem from="1675605762261" duration="16887000" />
     </task>
     <servers />
   </component>

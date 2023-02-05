@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\CreateUserType;
 use App\Form\GetUserByFieldType;
+use App\Form\UpdateUserType;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -57,7 +58,7 @@ class UserController extends AbstractController
                 return $this->render('user/error/error.html.twig', [
                     'error' => 'User with this mail is already exist!',
                     'title_text' => 'Can\'t create user!',
-                    'back_url'=>$route
+                    'back_url' => $route
                 ]);
             }
 
@@ -111,7 +112,7 @@ class UserController extends AbstractController
                 return $this->render('user/error/error.html.twig', [
                     'error' => 'You need to fill at least one field!',
                     'title_text' => 'Can\'t found user!',
-                    'back_url'=>$route
+                    'back_url' => $route
                 ]);
             }
 
@@ -128,13 +129,41 @@ class UserController extends AbstractController
     #[Route('user/update', name: 'app_user_update', methods: ["GET", "PATCH"])]
     public function updateUser(ManagerRegistry $registry, EntityManagerInterface $em, Request $req): Response
     {
-        $form = $this->createForm(GetUserByFieldType::class, [
+
+        /**
+         * prepare indexes to show in options fields
+         */
+        $queryBuilder = $em->createQueryBuilder();
+
+        $query = $queryBuilder->select('u.id')
+            ->from('App\Entity\User', 'u')
+            ->orderBy('u.id', 'ASC')
+            ->getQuery();
+
+        $result = $query->getArrayResult();
+
+        $indexes = array_map(function ($el) {
+            $el = array_values($el);
+            return $el[0];
+        }, $result);
+
+        array_shift($indexes, '');
+
+        /**
+         * create form with ID
+         */
+        $form = $this->createForm(UpdateUserType::class, [
             'method' => "PATCH"
-        ]);
+        ],
+            [
+                'id_options' => array_flip($indexes),
+                'btn_text' => 'Update user'
+            ]);
 
         $form->handleRequest($req);
 
-//        return $this->render('user/success/success.html.twig',['message'=>'User has been updated!']);
+
+
         return $this->render('user/update/update.html.twig', [
             'form' => $form->createView(),
             'btn_text' => 'Update user!',
