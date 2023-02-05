@@ -5,7 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/styles/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user-base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user-base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/GetUserByFieldType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/GetUserByFieldType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/create/error/error.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/error/error.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/create/success/success.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/success/success.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,6 +210,7 @@
       <recent name="D:\PHP\symfony\templates\user\get\one" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\PHP\symfony\templates\user" />
       <recent name="D:\PHP\symfony\templates\user\create\success" />
       <recent name="D:\PHP\symfony\templates\user\create\error" />
       <recent name="D:\PHP\symfony\templates\user\create" />
@@ -236,7 +239,7 @@
       <workItem from="1675454493384" duration="5928000" />
       <workItem from="1675460539217" duration="2771000" />
       <workItem from="1675501199444" duration="5436000" />
-      <workItem from="1675605762261" duration="6735000" />
+      <workItem from="1675605762261" duration="10185000" />
     </task>
     <servers />
   </component>

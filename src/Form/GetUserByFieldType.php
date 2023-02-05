@@ -32,7 +32,7 @@ class GetUserByFieldType extends AbstractType
                 'attr'=>['title'=>'']
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Find user!',
+                'label' => 'Submit!',
             ]);
     }
 

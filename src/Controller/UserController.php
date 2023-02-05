@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Form\CreateUserType;
 use App\Form\GetUserByFieldType;
 use App\Repository\UserRepository;
@@ -43,21 +42,19 @@ class UserController extends AbstractController
 
             /**
              * check for existing user with that mail in db
+             * and save if not
              */
-            dump(array("email"=>$user->getEmail()));
-            if (!$userRepo->findBy(array("email"=>$user->getEmail()))){
+            if (!$userRepo->findBy(array("email" => $user->getEmail()))) {
                 try {
                     $userRepo->save($user, true);
 
-                    return $this->render('user/create/success/success.html.twig');
+                    return $this->render('user/success/success.html.twig',['message'=>'User has been created!']);
                 } catch (Exception $e) {
-                    return $this->render('user/create/error/error.html.twig');
+                    return $this->render('user/error/error.html.twig');
                 }
-            }else{
-                return $this->render('user/create/error/error.html.twig', ['error'=>'User with this mail is already exist!']);
+            } else {
+                return $this->render('user/error/error.html.twig', ['error' => 'User with this mail is already exist!']);
             }
-
-
 
 
         }
@@ -79,7 +76,7 @@ class UserController extends AbstractController
         'GET',
         'POST',
     ])]
-    public function getByField(ManagerRegistry $registry, EntityManagerInterface $em, Request $req)
+    public function getByField(ManagerRegistry $registry,  Request $req)
     {
         $form = $this->createForm(GetUserByFieldType::class, [
             'method' => 'POST',
@@ -94,16 +91,14 @@ class UserController extends AbstractController
                     return $key;
                 }
             }, ARRAY_FILTER_USE_BOTH);
-//
-            $userRepo = new UserRepository($registry);
 
-            $qb = $em->createQueryBuilder();
+            $userRepo = new UserRepository($registry);
 
             try {
                 $user = $userRepo->findBy($fields);
                 return $this->json($user);
             } catch (Exception $e) {
-                return $this->render('user/create/error/error.html.twig');
+                return $this->render('user/error/error.html.twig');
             }
 
         }
@@ -114,11 +109,22 @@ class UserController extends AbstractController
         ]);
 
     }
-
-    private function isExist(mixed $user): bool
+    #[Route('user/update', name: 'app_user_update', methods:["GET","PATCH"])]
+    public function updateUser(ManagerRegistry $registry, EntityManagerInterface $em, Request $req) : Response
     {
-        $em = new EntityManager();
+        $form = $this->createForm(GetUserByFieldType::class,[
+            'method'=>"PATCH"
+        ]);
+        
+        $form->handleRequest($req);
 
+//        return $this->render('user/success/success.html.twig',['message'=>'User has been updated!']);
+        return $this->render('user/update/update.html.twig',[
+            'form'=>$form->createView(),
+            'btn_text'=>'Update user!',
+            'message'=>'Update user',
+            'explain_text'=>'Use id for choose user to modify'
+        ]);
     }
 
 }
