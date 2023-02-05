@@ -5,6 +5,12 @@ body {
     box-sizing: border-box;
     margin: 0;padding: 0;
 }
+.user__container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .example-wrapper {
     margin: 1em auto;
     max-width: 800px;
@@ -18,8 +24,8 @@ body {
 }
 
 a, a:visited {
-    text-decoration: none;
-    color: inherit;
+    text-decoration: underline;
+    color: blue;
 }
 .btn__wrapper {
     width: 90%;

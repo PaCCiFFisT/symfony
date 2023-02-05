@@ -45,7 +45,7 @@ class UserController extends AbstractController
              * check for existing user with that mail in db
              */
             dump(array("email"=>$user->getEmail()));
-            if (!$userRepo->findBy(array($user->getEmail()))){
+            if (!$userRepo->findBy(array("email"=>$user->getEmail()))){
                 try {
                     $userRepo->save($user, true);
 
