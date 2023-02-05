@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use function PHPUnit\Framework\isEmpty;
 
 class UserController extends AbstractController
 {
@@ -38,18 +37,27 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = new User();
-            $user = $form->getData();
 
+            $user = $form->getData();
             $userRepo = new UserRepository($registry);
 
-            try {
-                $userRepo->save($user, true);
+            /**
+             * check for existing user with that mail in db
+             */
+            dump(array("email"=>$user->getEmail()));
+            if (!$userRepo->findBy(array($user->getEmail()))){
+                try {
+                    $userRepo->save($user, true);
 
-                return $this->render('user/create/success/success.html.twig');
-            } catch (Exception $e) {
-                return $this->render('user/create/error/error.html.twig');
+                    return $this->render('user/create/success/success.html.twig');
+                } catch (Exception $e) {
+                    return $this->render('user/create/error/error.html.twig');
+                }
+            }else{
+                return $this->render('user/create/error/error.html.twig', ['error'=>'User with this mail is already exist!']);
             }
+
+
 
 
         }
@@ -71,7 +79,7 @@ class UserController extends AbstractController
         'GET',
         'POST',
     ])]
-    public function getByField(ManagerRegistry $registry,EntityManagerInterface $em , Request $req)
+    public function getByField(ManagerRegistry $registry, EntityManagerInterface $em, Request $req)
     {
         $form = $this->createForm(GetUserByFieldType::class, [
             'method' => 'POST',
@@ -79,27 +87,21 @@ class UserController extends AbstractController
 
         $form->handleRequest($req);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
-
             $data = array_slice($form->getData(), 1);
-            $fields = [];
-            dump($data);
-
-            foreach ($data as $key => $value){
-                if ($data[$key]!=null){
-                    $fields[$key]=$data[$key];
+            $fields = array_filter($data, function ($key, $value) {
+                if ($value != null) {
+                    return $key;
                 }
-            }
-            dump($fields);
-            dump((array_keys($data)));
-//            $userRepo = new UserRepository($registry);
+            }, ARRAY_FILTER_USE_BOTH);
+//
+            $userRepo = new UserRepository($registry);
 
             $qb = $em->createQueryBuilder();
 
             try {
-//                $user = $userRepo->findBy($data);
-                return $this->json();
+                $user = $userRepo->findBy($fields);
+                return $this->json($user);
             } catch (Exception $e) {
                 return $this->render('user/create/error/error.html.twig');
             }
@@ -110,6 +112,12 @@ class UserController extends AbstractController
         return $this->render('user/get/byField/get.html.twig', [
             'get_by_field' => $form->createView(),
         ]);
+
+    }
+
+    private function isExist(mixed $user): bool
+    {
+        $em = new EntityManager();
 
     }
 
