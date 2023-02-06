@@ -5,6 +5,6 @@ controllers:
     type: attribute
 
 app_user_controller:
-    path: /user
+    path: /
     controller: App\Controller\UserController::userAction
     methods: 'GET'

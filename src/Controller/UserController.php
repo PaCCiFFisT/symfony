@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\CreateUserType;
 use App\Form\GetUserByFieldType;
 use App\Form\UpdateUserType;
+use App\Model\UpdateUserModel;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -70,9 +71,9 @@ class UserController extends AbstractController
     }
 
     #[Route('user/get-all', name: 'app_user_get_all', methods: ['GET'])]
-    public function get(ManagerRegistry $registry): Response
+    public function get(ManagerRegistry $registry, UserRepository $userRepo): Response
     {
-        $userRepo = new UserRepository($registry);
+//        $userRepo = new UserRepository($registry);
         $res = $userRepo->findAll();
 
         return $this->json($res);
@@ -107,7 +108,7 @@ class UserController extends AbstractController
                     return $this->json($user);
                 } catch (Exception $e) {
                     return $this->render('user/error/error.html.twig', [
-                        'title__text' => 'Can\'t foun user!'
+                        'title__text' => 'Can\'t found user!'
                     ]);
                 }
             } else {
@@ -130,30 +131,16 @@ class UserController extends AbstractController
     }
 
     #[Route('user/update', name: 'app_user_update', methods: ["GET", "PATCH"])]
-    public function updateUser(ManagerRegistry $registry, EntityManagerInterface $em, Request $req): Response
+    public function updateUser(UpdateUserModel $updateUserModel, ManagerRegistry $registry, EntityManagerInterface $em, Request $req): Response
     {
 
         /**
          * prepare indexes to show in options fields
          */
-        $queryBuilder = $em->createQueryBuilder();
-
-        $query = $queryBuilder->select('u.id')
-            ->from('App\Entity\User', 'u')
-            ->orderBy('u.id', 'ASC')
-            ->getQuery();
-
-        $result = $query->getArrayResult();
-
-        $indexes = array_map(function ($el) {
-            $el = array_values($el);
-            return $el[0];
-        }, $result);
-
-        array_unshift($indexes, '');
+        $indexes = $updateUserModel->getUsersIds();
 
         /**
-         * create form with ID
+         * update form data
          */
         $form = $this->createForm(UpdateUserType::class, [
             'method' => "PATCH"
@@ -164,21 +151,27 @@ class UserController extends AbstractController
             ]);
 
         $form->handleRequest($req);
-
+        if ($form->isSubmitted() && $form->isValid()){
+            echo json_encode(123123123);
+            $data = parse_url($req);
+            dump($data);
+//            $updateUserModel->updateUser($data);
+        }
         /**
          * TODO implement getting user by ID, create User object and show it in inputs
          * TODO maybe need send ajax to other route
-        */
+         */
 
         if (isset($_GET['id'])) {
-            echo 'abracadabra';
+            return $this->json($updateUserModel->getUserById($_GET['id']));
+        } else {
+            return $this->render('user/update/update.html.twig', [
+                'form' => $form->createView(),
+                'btn_text' => 'Update user!',
+                'message' => 'Update user',
+                'explain_text' => 'Use id to choose user to modify'
+            ]);
         }
-        return $this->render('user/update/update.html.twig', [
-            'form' => $form->createView(),
-            'btn_text' => 'Update user!',
-            'message' => 'Update user',
-            'explain_text' => 'Use id to choose user to modify'
-        ]);
     }
 
 }
