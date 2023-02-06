@@ -4,10 +4,9 @@
     <list default="true" id="667c9c0e-0fb2-4050-b948-2a17d5f2d5a7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/styles/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Form/UpdateUserType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/UpdateUserType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/UpdateUserModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/UpdateUserModel.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -243,6 +242,7 @@
       <workItem from="1675501199444" duration="5436000" />
       <workItem from="1675605762261" duration="20839000" />
       <workItem from="1675631038525" duration="7692000" />
+      <workItem from="1675714430935" duration="6953000" />
     </task>
     <servers />
   </component>

@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -30,9 +31,10 @@ class UpdateUserModel
             ->getQuery();
 
         $result = $query->getArrayResult();
-
+//@TODO make array of value=>value instead key=>value
         $indexes = array_map(function ($el) {
             $el = array_values($el);
+            dump($el[0]);
             return $el[0];
         }, $result);
 
@@ -46,4 +48,10 @@ class UpdateUserModel
         return $this->userRepo->findBy(['id'=>$id]);
     }
 
+//    public function updateUser(array $data): bool
+//    {
+//        $qb = $this->em->createQueryBuilder();
+//
+//        $qb->update('App:User', 'u')->set()
+//    }
 }

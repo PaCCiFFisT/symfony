@@ -39,31 +39,49 @@ updateUserOption.addEventListener('change',getUserForChange);
 
 const updateForm = document.forms.namedItem('update_user');
 
-function sentUpdatedUser(e) {
-    e.preventDefault();
-    let formData = new FormData(updateForm);
-    let data = {};
-    for (let [dataKey, value] of formData.entries()) {
-        console.log(key, value)
-         let key = dataKey.substring(dataKey.indexOf("[")+1,dataKey.indexOf("]"));
-        console.log(key, value)
-
-        data[key]=value;
-
-
-    }
-    let method = 'PATCH';
-    let xhr = new XMLHttpRequest();
-    console.log(method);
-    xhr.open(method,'');
-    // xhr.setRequestHeader()
-    xhr.onreadystatechange=()=>{
-        if (xhr.readyState === 4 && xhr.status === 200){
-            console.log(JSON.parse(xhr.response));
-        }
-    }
-    xhr.send(JSON.stringify(data));
-
-}
-
-updateForm.addEventListener('submit', sentUpdatedUser)
+// function sendUpdatedUser(e) {
+//     e.preventDefault();
+//     let formData = new FormData(updateForm);
+//     let data = {};
+//     for (let [dataKey, value] of formData.entries()) {
+//          let key = dataKey.substring(dataKey.indexOf("[")+1,dataKey.indexOf("]"));
+//          data[key]=value;
+//     }
+//     let method = 'POST';
+//     let xhr = new XMLHttpRequest();
+//     xhr.open("POST",'/user/update');
+//     xhr.setRequestHeader( 'Content-Type', 'application/json');
+//     xhr.onreadystatechange=()=>{
+//         if (xhr.readyState === 4 && xhr.status === 200){
+//             console.log(JSON.parse(xhr.response));
+//         }
+//     }
+//     delete data['_token'];
+//     data = JSON.stringify(data);
+//     console.log(data);
+//
+//     xhr.send(data);
+//     // xhr.send();
+//
+// }
+// async function sendUpdatedUser(e) {
+//     e.preventDefault();
+//     let formData = new FormData(updateForm);
+//     let data = {};
+//     for (let [dataKey, value] of formData.entries()) {
+//         let key = dataKey.substring(dataKey.indexOf("[") + 1, dataKey.indexOf("]"));
+//         data[key] = value;
+//     }
+//     const response = await fetch('',{
+//         method: 'PATCH',
+//         mode: "cors",
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         referrerPolicy: 'no-referrer',
+//         body: JSON.stringify(data)
+//     })
+//     console.log(response.json());
+//     return response.json();
+// }
+// updateForm.addEventListener('submit', sendUpdatedUser)
