@@ -34,7 +34,6 @@ class UpdateUserModel
 //@TODO make array of value=>value instead key=>value
         $indexes = array_map(function ($el) {
             $el = array_values($el);
-            dump($el[0]);
             return $el[0];
         }, $result);
 
@@ -48,10 +47,10 @@ class UpdateUserModel
         return $this->userRepo->findBy(['id'=>$id]);
     }
 
-//    public function updateUser(array $data): bool
-//    {
-//        $qb = $this->em->createQueryBuilder();
-//
-//        $qb->update('App:User', 'u')->set()
-//    }
+    public function updateUser(array $data): bool
+    {
+        $qb = $this->em->createQueryBuilder();
+
+        $qb->update('App:User', 'u')->set()
+    }
 }

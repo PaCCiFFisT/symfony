@@ -129,7 +129,7 @@ class UserController extends AbstractController
 
     }
 
-    #[Route('user/update', name: 'app_user_update', methods: ["GET", "POST"])]
+    #[Route('user/update', name: 'app_user_update', methods: ["GET", "POST", "PUT"])]
     public function updateUser(UpdateUserModel $updateUserModel, ManagerRegistry $registry, EntityManagerInterface $em, Request $req): Response
     {
 
@@ -141,48 +141,32 @@ class UserController extends AbstractController
             [
                 'id_options' => array_flip($indexes),
                 'btn_text' => 'Update user',
-                'action'=>$this->generateUrl($req->attributes->get('_route'))
+                'action' => $this->generateUrl($req->attributes->get('_route'))
             ]);
 
         /**
          * TODO implement getting user by ID, create User object and show it in inputs
          * TODO maybe need send ajax to other route
          */
-        if($form->isSubmitted()){
-            dump($_POST);
-            return $this->json($updateUserModel->getUserById(1));
-        }
-//        $reqBody = file_get_contents('php://input');
-//        dump($_POST);
-//        dump(json_decode($reqBody));
-//        if ($reqBody) {
-//            dump($_POST);
-//
-//            $reqBody = file_get_contents('php://input');
-//            return $this->json($updateUserModel->getUserById($reqBody['id']));
-//        }
-//        dump(file_get_contents('php://input'));
-//
-//        if (isset($_POST['update_user'])) {
-//            dump($_POST['update_user']['id']);
-//        }
-        if(isset($_POST['update_user'])){
-            dump(intval($_POST['update_user']['id']));
-            $id = intval($_POST['update_user']['id']);
-            dump(is_int($id));
-//            return $this->json($updateUserModel->getUserById(intval($_POST['update_user']['id'])));
 
+
+        $form->handleRequest($req);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            dump($data);
+            if (isset($data['id'])) {
+                return $this->json($updateUserModel->getUserById($data['id']));
+            }
         }
         if (isset($_GET['id'])) {
             return $this->json($updateUserModel->getUserById($_GET['id']));
-        }  else {
-            return $this->render('user/update/update.html.twig', [
-                'form' => $form->createView(),
-                'btn_text' => 'Update user!',
-                'message' => 'Update user',
-                'explain_text' => 'Use id to choose user to modify'
-            ]);
         }
+        return $this->render('user/update/update.html.twig', [
+            'form' => $form->createView(),
+            'btn_text' => 'Update user!',
+            'message' => 'Update user',
+            'explain_text' => 'Use id to choose user to modify'
+        ]);
     }
 
 }

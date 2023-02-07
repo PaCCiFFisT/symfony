@@ -27,7 +27,9 @@ class UpdateUserType extends AbstractType
             ->add('button', SubmitType::class, [
                 'label' => $options['btn_text'],
             ])
-            ->setAction($options['action']);
+//            ->setAction($options['action'])
+//            ->setMethod("PUT")
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
