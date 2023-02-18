@@ -51,6 +51,7 @@ class UpdateUserModel
     {
         $qb = $this->em->createQueryBuilder();
 
-        $qb->update('App:User', 'u')->set()
+//        $qb->update('App:User', 'u')
+//            ->set('')
     }
 }
