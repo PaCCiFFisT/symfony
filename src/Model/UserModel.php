@@ -2,22 +2,56 @@
 
 namespace App\Model;
 
-use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
-class UpdateUserModel
+class UserModel
 {
     private ManagerRegistry $registry;
     private EntityManagerInterface $em;
     private UserRepository $userRepo;
 
-    public function __construct(EntityManagerInterface $em, ManagerRegistry $registry, UserRepository $userRepo)
+    public function __construct(
+        EntityManagerInterface $em,
+        ManagerRegistry $registry,
+        UserRepository $userRepo
+    )
     {
         $this->registry = $registry;
         $this->em = $em;
         $this->userRepo = $userRepo;
+    }
+
+    /**
+     * Gets user data and save it using Repository
+     * @param $user
+     * @return array | null
+     */
+    public function createNewUser($user) : array | null
+    {
+
+        /**
+         * check for existing user with that email in db
+         * and save if not
+         */
+        if (!$this->userRepo->findBy(["email"=>$user->getEmail()])){
+          $this->userRepo->save($user, true);
+            return $this->userRepo->findBy(["email"=>$user->getEmail()]);
+
+        }else{
+            return null;
+        }
+
+    }
+    /**
+     * Takes fields for search
+     * @param $fields
+     * @return array
+     */
+    public function getUserByField($fields): array
+    {
+        return $this->userRepo->findBy($fields);
     }
 
     public function getUsersIds(): array
@@ -42,9 +76,9 @@ class UpdateUserModel
         return $indexes;
     }
 
-    public function getUserById($id) : array
+    public function getUserById($id): array
     {
-        return $this->userRepo->findBy(['id'=>$id]);
+        return $this->userRepo->findBy(['id' => $id]);
     }
 
     public function updateUser(array $data): bool

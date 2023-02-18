@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Form\CreateUserType;
 use App\Form\GetUserByFieldType;
 use App\Form\UpdateUserType;
-use App\Model\UpdateUserModel;
+use App\Model\UserModel;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,85 +15,104 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class UserController extends AbstractController
 {
+    private object $userModel;
+    private EntityManagerInterface $em;
+    private ManagerRegistry $registry;
+    private UserRepository $userRepo;
 
-    public function __construct()
+    public function __construct(
+        EntityManagerInterface $em,
+        ManagerRegistry        $registry,
+        UserModel              $userModel,
+        UserRepository         $userRepo
+    )
     {
+        $this->userModel = $userModel;
+        $this->em = $em;
+        $this->registry = $registry;
+        $this->userRepo = $userRepo;
     }
 
+    /**
+     * Shows user menu
+     * @return Response
+     */
     public function userAction(): Response
     {
         return $this->render('user/index.html.twig',
             ['encore_entry_link_tags' => 'app/css/user-styles.css']);
     }
 
-    #[Route('user/create', name: 'form_create_user', methods: ['GET', 'POST'])]
-    public function formCreateUser(
-        Request         $req,
-        ManagerRegistry $registry
-    ): Response
+    /**
+     * Renders form for creating new user
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('user/create', name: 'create_user', methods: ['GET', 'POST'])]
+    public function createUser(Request $request): Response
     {
         $form = $this->createForm(CreateUserType::class, null, [
             'method' => 'POST',
         ]);
 
-        $form->handleRequest($req);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $user = $form->getData();
-            $userRepo = new UserRepository($registry);
+            $result = $this->userModel->createNewUser($user);
 
-            /**
-             * check for existing user with that mail in db
-             * and save if not
-             */
-            if (!$userRepo->findBy(array("email" => $user->getEmail()))) {
-                try {
-                    $userRepo->save($user, true);
+            if ($result!=null){
+                return $this->json($result);
+            }else{
 
-                    return $this->render('user/success/success.html.twig', ['message' => 'User has been created!']);
-                } catch (Exception $e) {
-                    return $this->render('user/error/error.html.twig');
-                }
-            } else {
-                $route = $this->generateUrl($req->attributes->get('_route'));
+                $route = $this->generateUrl($request->attributes->get('_route'));
 
                 return $this->render('user/error/error.html.twig', [
-                    'error' => 'User with this mail is already exist!',
-                    'title_text' => 'Can\'t create user!',
-                    'back_url' => $route
+                    'title_text'=>"Can't create user",
+                    'back_url' => $route,
+                    'error'=>"User already exist"
                 ]);
             }
-
-
         }
 
         return $this->render('user/create/create.html.twig',
             ['user__create' => $form->createView()]);
     }
 
+    /**
+     * Returns list of all users in json format
+     * @return Response
+     */
     #[Route('user/get-all', name: 'app_user_get_all', methods: ['GET'])]
-    public function get(ManagerRegistry $registry, UserRepository $userRepo): Response
+    public function getAll(): Response
     {
-        $res = $userRepo->findAll();
 
+        $res = $this->userRepo->findAll();
         return $this->json($res);
+
     }
 
+    /**
+     * Render search user by field/s form
+     * @param Request $request
+     * @return Response json of founded users
+     */
     #[Route('user/get-by-field', name: 'app_user_get_by_field', methods: [
         'GET',
         'POST',
     ])]
-    public function getByField(ManagerRegistry $registry, Request $req)
+    public function getByField(Request $request) : Response
     {
         $form = $this->createForm(GetUserByFieldType::class, [
             'method' => 'POST',
         ]);
 
 
-        $form->handleRequest($req);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = array_slice($form->getData(), 1);
@@ -102,20 +121,18 @@ class UserController extends AbstractController
                     return $key;
                 }
             }, ARRAY_FILTER_USE_BOTH);
-
+            dump($fields);
             if (count($fields) > 0) {
-                $userRepo = new UserRepository($registry);
 
                 try {
-                    $user = $userRepo->findBy($fields);
-                    return $this->json($user);
-                } catch (Exception $e) {
+                    return $this->json($this->userModel->getUserByField($fields));
+                } catch (Exception $exception) {
                     return $this->render('user/error/error.html.twig', [
-                        'title__text' => 'Can\'t found user!'
+                        'title__text' => 'Can\'t found user!' . $exception->getMessage()
                     ]);
                 }
             } else {
-                $route = $this->generateUrl($req->attributes->get('_route'));
+                $route = $this->generateUrl($request->attributes->get('_route'));
                 return $this->render('user/error/error.html.twig', [
                     'error' => 'You need to fill at least one field!',
                     'title_text' => 'Can\'t found user!',
@@ -133,11 +150,16 @@ class UserController extends AbstractController
 
     }
 
+    /**
+     * Renders update user form
+     * @param Request $req
+     * @return Response json of updated user
+     */
     #[Route('user/update', name: 'app_user_update', methods: ["GET", "POST", "PUT"])]
-    public function updateUser(UpdateUserModel $updateUserModel, ManagerRegistry $registry, EntityManagerInterface $em, Request $req): Response
+    public function updateUser( Request $req): Response
     {
 
-        $indexes = $updateUserModel->getUsersIds();
+        $indexes = $this->userModel->getUsersIds();
 
         $form = $this->createForm(UpdateUserType::class, [
             'method' => "POST",
@@ -159,11 +181,11 @@ class UserController extends AbstractController
             $data = $form->getData();
             dump($data);
             if (isset($data['id'])) {
-                return $this->json($updateUserModel->getUserById($data['id']));
+                return $this->json($this->userModel->getUserById($data['id']));
             }
         }
         if (isset($_GET['id'])) {
-            return $this->json($updateUserModel->getUserById($_GET['id']));
+            return $this->json($this->userModel->getUserById($_GET['id']));
         }
         return $this->render('user/update/update.html.twig', [
             'form' => $form->createView(),
