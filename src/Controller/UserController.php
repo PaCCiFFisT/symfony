@@ -65,16 +65,16 @@ class UserController extends AbstractController
             $user = $form->getData();
             $result = $this->userModel->createNewUser($user);
 
-            if ($result!=null){
+            if ($result != null) {
                 return $this->json($result);
-            }else{
+            } else {
 
                 $route = $this->generateUrl($request->attributes->get('_route'));
 
                 return $this->render('user/error/error.html.twig', [
-                    'title_text'=>"Can't create user",
+                    'title_text' => "Can't create user",
                     'back_url' => $route,
-                    'error'=>"User already exist"
+                    'error' => "User already exist"
                 ]);
             }
         }
@@ -105,12 +105,11 @@ class UserController extends AbstractController
         'GET',
         'POST',
     ])]
-    public function getByField(Request $request) : Response
+    public function getByField(Request $request): Response
     {
         $form = $this->createForm(GetUserByFieldType::class, [
             'method' => 'POST',
         ]);
-
 
         $form->handleRequest($request);
 
@@ -121,28 +120,34 @@ class UserController extends AbstractController
                     return $key;
                 }
             }, ARRAY_FILTER_USE_BOTH);
-            dump($fields);
-            if (count($fields) > 0) {
 
-                try {
-                    return $this->json($this->userModel->getUserByField($fields));
-                } catch (Exception $exception) {
+            if (count($fields) > 0) {
+                $result = $this->userModel->getUserByField($fields);
+
+                if (count($result)>0){
+                    return $this->json($result);
+                }else{
+                    $route = $this->generateUrl($request->attributes->get('_route'));
+
                     return $this->render('user/error/error.html.twig', [
-                        'title__text' => 'Can\'t found user!' . $exception->getMessage()
+                        'title_text' => 'Can\'t found user!' ,
+                        'error' =>"User not found, try to change criteria",
+                        'back_url'=>$route
                     ]);
                 }
+
             } else {
+
                 $route = $this->generateUrl($request->attributes->get('_route'));
+
                 return $this->render('user/error/error.html.twig', [
-                    'error' => 'You need to fill at least one field!',
                     'title_text' => 'Can\'t found user!',
+                    'error' => 'You need to fill at least one field!',
                     'back_url' => $route
                 ]);
             }
 
-
         }
-
 
         return $this->render('user/get/byField/get.html.twig', [
             'get_by_field' => $form->createView(),
@@ -156,7 +161,7 @@ class UserController extends AbstractController
      * @return Response json of updated user
      */
     #[Route('user/update', name: 'app_user_update', methods: ["GET", "POST", "PUT"])]
-    public function updateUser( Request $req): Response
+    public function updateUser(Request $req): Response
     {
 
         $indexes = $this->userModel->getUsersIds();

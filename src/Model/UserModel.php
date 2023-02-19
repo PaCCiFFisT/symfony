@@ -14,8 +14,8 @@ class UserModel
 
     public function __construct(
         EntityManagerInterface $em,
-        ManagerRegistry $registry,
-        UserRepository $userRepo
+        ManagerRegistry        $registry,
+        UserRepository         $userRepo
     )
     {
         $this->registry = $registry;
@@ -28,24 +28,24 @@ class UserModel
      * @param $user
      * @return array | null
      */
-    public function createNewUser($user) : array | null
+    public function createNewUser($user): array|null
     {
 
         /**
          * check for existing user with that email in db
          * and save if not
          */
-        if (!$this->userRepo->findBy(["email"=>$user->getEmail()])){
-          $this->userRepo->save($user, true);
-            return $this->userRepo->findBy(["email"=>$user->getEmail()]);
-
-        }else{
+        if (!$this->userRepo->findBy(["email" => $user->getEmail()])) {
+            $this->userRepo->save($user, true);
+            return $this->userRepo->findBy(["email" => $user->getEmail()]);
+        } else {
             return null;
         }
 
     }
+
     /**
-     * Takes fields for search
+     * Returns all entries depend on fields data
      * @param $fields
      * @return array
      */
@@ -54,18 +54,18 @@ class UserModel
         return $this->userRepo->findBy($fields);
     }
 
+    /**
+     * Prepares users ids for show in select field
+     * @return array
+     */
     public function getUsersIds(): array
     {
-
         $queryBuilder = $this->em->createQueryBuilder();
-
         $query = $queryBuilder->select('u.id')
             ->from('App\Entity\User', 'u')
             ->orderBy('u.id', 'ASC')
             ->getQuery();
-
         $result = $query->getArrayResult();
-//@TODO make array of value=>value instead key=>value
         $indexes = array_map(function ($el) {
             $el = array_values($el);
             return $el[0];
@@ -76,6 +76,11 @@ class UserModel
         return $indexes;
     }
 
+    /**
+     * Returns founded user data as array;
+     * @param $id
+     * @return array
+     */
     public function getUserById($id): array
     {
         return $this->userRepo->findBy(['id' => $id]);
