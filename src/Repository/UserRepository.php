@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,6 +22,12 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * Saves new user into db
+     * @param User $entity
+     * @param bool $flush
+     * @return void
+     */
     public function save(User $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -30,6 +37,12 @@ class UserRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Deletes user from db
+     * @param User $entity
+     * @param bool $flush
+     * @return void
+     */
     public function remove(User $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -39,11 +52,11 @@ class UserRepository extends ServiceEntityRepository
         }
     }
 
-//    public function save
-
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
+    /**
+     * Returns all founded entries depend on field data
+     * @param $value
+     * @return array
+     */
     public function findByField($value): array
     {
         return $this->createQueryBuilder('u')
@@ -55,6 +68,12 @@ class UserRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Returns one entry depend on field data
+     * @param $value
+     * @return User|null
+     * @throws NonUniqueResultException
+     */
     public function findOneBySomeField($value): ?User
     {
         return $this->createQueryBuilder('u')
@@ -64,5 +83,40 @@ class UserRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * Gets all user-ids from db
+     * @return array
+     */
+    public function getIds() : array
+    {
+        return $this->createQueryBuilder('user')
+            ->select('user.id')
+            ->distinct()
+            ->from('App\Entity\User', 'u')
+            ->orderBy('user.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
+    /**
+     * Updates one entry
+     * @param $data
+     * @return void
+     */
+    public function updateOne($data) : void
+    {
+
+        $this->createQueryBuilder('u')
+            ->update('App:User', 'u')
+            ->setParameter('userName', $data['name'])
+            ->setParameter('userEmail', $data['email'])
+            ->setParameter('userPassword', $data['password'])
+            ->setParameter('id', $data['id'])
+            ->set('u.name', ':userName')
+            ->set('u.email', ':userEmail')
+            ->set('u.password', ':userPassword')
+            ->where('u.id = :id')
+            ->getQuery()
+            ->execute();
+    }
 }

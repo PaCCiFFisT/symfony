@@ -7,9 +7,6 @@ use App\Form\GetUserByFieldType;
 use App\Form\UpdateUserType;
 use App\Model\UserModel;
 use App\Repository\UserRepository;
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,20 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     private object $userModel;
-    private EntityManagerInterface $em;
-    private ManagerRegistry $registry;
     private UserRepository $userRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
-        ManagerRegistry        $registry,
         UserModel              $userModel,
         UserRepository         $userRepo
     )
     {
         $this->userModel = $userModel;
-        $this->em = $em;
-        $this->registry = $registry;
         $this->userRepo = $userRepo;
     }
 
@@ -90,10 +81,8 @@ class UserController extends AbstractController
     #[Route('user/get-all', name: 'app_user_get_all', methods: ['GET'])]
     public function getAll(): Response
     {
-
         $res = $this->userRepo->findAll();
         return $this->json($res);
-
     }
 
     /**
@@ -114,7 +103,12 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $data = array_slice($form->getData(), 1);
+
+            /**
+             * filters empty input field
+             */
             $fields = array_filter($data, function ($key, $value) {
                 if ($value != null) {
                     return $key;
@@ -124,15 +118,15 @@ class UserController extends AbstractController
             if (count($fields) > 0) {
                 $result = $this->userModel->getUserByField($fields);
 
-                if (count($result)>0){
+                if (count($result) > 0) {
                     return $this->json($result);
-                }else{
+                } else {
                     $route = $this->generateUrl($request->attributes->get('_route'));
 
                     return $this->render('user/error/error.html.twig', [
-                        'title_text' => 'Can\'t found user!' ,
-                        'error' =>"User not found, try to change criteria",
-                        'back_url'=>$route
+                        'title_text' => 'Can\'t found user!',
+                        'error' => "User not found, try to change criteria",
+                        'back_url' => $route
                     ]);
                 }
 
@@ -146,7 +140,6 @@ class UserController extends AbstractController
                     'back_url' => $route
                 ]);
             }
-
         }
 
         return $this->render('user/get/byField/get.html.twig', [
@@ -166,32 +159,30 @@ class UserController extends AbstractController
 
         $indexes = $this->userModel->getUsersIds();
 
-        $form = $this->createForm(UpdateUserType::class, [
-            'method' => "POST",
-        ],
+        $form = $this->createForm(
+            UpdateUserType::class,
+            ['method' => "POST",],
             [
                 'id_options' => array_flip($indexes),
                 'btn_text' => 'Update user',
                 'action' => $this->generateUrl($req->attributes->get('_route'))
-            ]);
+            ]
+        );
 
-        /**
-         * TODO implement getting user by ID, create User object and show it in inputs
-         * TODO maybe need send ajax to other route
-         */
-
-
-        $form->handleRequest($req);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            dump($data);
-            if (isset($data['id'])) {
-                return $this->json($this->userModel->getUserById($data['id']));
-            }
-        }
         if (isset($_GET['id'])) {
             return $this->json($this->userModel->getUserById($_GET['id']));
         }
+
+        $form->handleRequest($req);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            if (isset($data['id'])) {
+                $user = $this->userModel->updateUser($data);
+                return $this->json($user);
+            }
+        }
+
         return $this->render('user/update/update.html.twig', [
             'form' => $form->createView(),
             'btn_text' => 'Update user!',
@@ -199,5 +190,4 @@ class UserController extends AbstractController
             'explain_text' => 'Use id to choose user to modify'
         ]);
     }
-
 }

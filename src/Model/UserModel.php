@@ -2,31 +2,28 @@
 
 namespace App\Model;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * Processes changes of User entity
+ */
 class UserModel
 {
-    private ManagerRegistry $registry;
-    private EntityManagerInterface $em;
+
     private UserRepository $userRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
-        ManagerRegistry        $registry,
         UserRepository         $userRepo
     )
     {
-        $this->registry = $registry;
-        $this->em = $em;
         $this->userRepo = $userRepo;
     }
 
     /**
      * Gets user data and save it using Repository
      * @param $user
-     * @return array | null
+     * @return array | null returns null if not a single user found
      */
     public function createNewUser($user): array|null
     {
@@ -60,18 +57,14 @@ class UserModel
      */
     public function getUsersIds(): array
     {
-        $queryBuilder = $this->em->createQueryBuilder();
-        $query = $queryBuilder->select('u.id')
-            ->from('App\Entity\User', 'u')
-            ->orderBy('u.id', 'ASC')
-            ->getQuery();
-        $result = $query->getArrayResult();
-        $indexes = array_map(function ($el) {
-            $el = array_values($el);
-            return $el[0];
-        }, $result);
 
-        array_unshift($indexes, '');
+        $ids = $this->userRepo->getIds();
+        $indexes = [];
+        $indexes[0] = '';
+
+        foreach ($ids as $value) {
+            $indexes[$value['id']] = $value['id'];
+        }
 
         return $indexes;
     }
@@ -86,11 +79,14 @@ class UserModel
         return $this->userRepo->findBy(['id' => $id]);
     }
 
-    public function updateUser(array $data): bool
+    /**
+     * Gets data from controller, transfers for updating and then returns new user data
+     * @param array $data
+     * @return User updated User object
+     */
+    public function updateUser(array $data): User
     {
-        $qb = $this->em->createQueryBuilder();
-
-//        $qb->update('App:User', 'u')
-//            ->set('')
+        $this->userRepo->updateOne($data);
+        return $this->userRepo->find($data['id']);
     }
 }
