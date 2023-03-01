@@ -12,10 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
+/**
+ * Processes requests of user data
+ */
 class UserController extends AbstractController
 {
-    private object $userModel;
+    private UserModel $userModel;
     private UserRepository $userRepo;
 
     public function __construct(
@@ -190,4 +192,6 @@ class UserController extends AbstractController
             'explain_text' => 'Use id to choose user to modify'
         ]);
     }
+
+
 }
