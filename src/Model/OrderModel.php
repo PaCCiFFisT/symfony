@@ -22,6 +22,12 @@ class OrderModel
      *                          'order' => [product1,product2,...],
      *                          'price' => *sum of products price*
      *                          ]
+     *     * Returns data in format orderId => [
+     *                          'name' => 'name'
+     *                          'email' =>'example@mail.com',
+     *                          'order' => [product1,product2,...],
+     *                          'price' => *sum of products price*
+     *                          ]
      * @return array
      */
     public function getAll(): array
@@ -29,18 +35,32 @@ class OrderModel
         $orders = $this->orderRepository->findAllOrders();
         $result = [];
         foreach ($orders as $row) {
-            if (!array_key_exists($row['email'], $result)) {
-                $result[$row['email']] =
+            if (!array_key_exists($row['order_id'], $result)) {
+                $result[$row['order_id']] =
                     [
+                        'email' => $row['email'],
                         'name' => $row['name'],
                         'order' => [$row['product']],
                         'price'=> $row['price']
                     ];
             } else {
-                $result[$row['email']]['order'][] = $row['product'];
-                $result[$row['email']]['price'] += $row['price'];
+                $result[$row['order_id']]['order'][] = $row['product'];
+                $result[$row['order_id']]['price'] += $row['price'];
             }
         }
         return $result;
+    }
+
+    /**
+     * Returns data in format orderId => [
+     *                          'name' => $name,
+     *                          'email'=>$email,
+     *                          ''
+     *                          ]
+     * @param int $id
+     * @return array
+     */
+    public function getById(int $id) : array
+    {
     }
 }

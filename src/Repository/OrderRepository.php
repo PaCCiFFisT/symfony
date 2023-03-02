@@ -52,7 +52,7 @@ class OrderRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('o')
             ->leftJoin(User::class, 'u', Join::WITH, 'u.id = o.user_id')
             ->leftJoin(Product::class, 'p', Join::WITH, 'p.id = o.product_id')
-            ->select('u.name, u.email, p.name as product, p.price')
+            ->select('o.order_id, u.name, u.email, p.name as product, p.price')
             ->where('o.user_id is not null')
             ->orderBy('u.id', 'ASC')
             ->getQuery()
