@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Model\OrderModel;
-use App\Model\UserModel;
-use App\Repository\OrderRepository;
-use App\Repository\UserRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,19 +11,16 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Processes requests of orders data
  */
-class OrderController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
+class OrderController extends AbstractController
 {
 
     private OrderModel $orderModel;
-    private OrderRepository $orderRepo;
 
     public function __construct(
-        OrderModel              $orderModel,
-        OrderRepository         $orderRepo
+        OrderModel $orderModel,
     )
     {
         $this->orderModel = $orderModel;
-        $this->orderRepo = $orderRepo;
     }
 
     /**
@@ -34,9 +29,21 @@ class OrderController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstrac
      * @return Response
      */
     #[Route('orders', name: 'app_orders_all', methods: ["GET"])]
-    public function getAllOrders(Request $request) : Response
+    public function orders(Request $request): Response
     {
         return $this->json($this->orderModel->getAll());
     }
 
+    /**
+     * Returns single order
+     * @param int $id - id of user
+     * @return Response
+     */
+    #[Route('orders/{id}', name: 'app_orders_by_id', methods: ["GET"])]
+    public function orderById(int $id): Response
+    {
+        $order = $this->orderModel->getById($id);
+
+        return empty($order) ? new Response('Order not found', 404) : $this->json($order);
+    }
 }

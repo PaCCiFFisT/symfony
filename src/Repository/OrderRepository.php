@@ -54,7 +54,26 @@ class OrderRepository extends ServiceEntityRepository
             ->leftJoin(Product::class, 'p', Join::WITH, 'p.id = o.product_id')
             ->select('o.order_id, u.name, u.email, p.name as product, p.price')
             ->where('o.user_id is not null')
-            ->orderBy('u.id', 'ASC')
+            ->orderBy('o.order_id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Finds and returns one orders depend on ID.
+     * Includes Name, Email and products
+     * @param $id
+     * @return array
+     */
+    public function findOneOrder($id): array
+    {
+        return $this->createQueryBuilder('o')
+            ->leftJoin(User::class, 'u', Join::WITH, 'u.id = o.user_id')
+            ->leftJoin(Product::class, 'p', Join::WITH, 'p.id = o.product_id')
+            ->select('o.order_id, u.name, u.email, p.name as product, p.price')
+            ->where('o.order_id = :id')
+            ->setParameter('id', $id)
+            ->orderBy('o.order_id', 'ASC')
             ->getQuery()
             ->getResult();
     }
