@@ -39,7 +39,7 @@ class OrderController extends AbstractController
      * @param int $id - id of user
      * @return Response
      */
-    #[Route('orders/{id}', name: 'app_orders_by_id', methods: ["GET"])]
+    #[Route('orders/{id<\d+>}', name: 'app_orders_by_id', methods: ["GET"])]
     public function orderById(int $id): Response
     {
         $order = $this->orderModel->getById($id);
